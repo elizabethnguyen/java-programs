@@ -8,6 +8,7 @@ public class sortTests {
         testSort(args, Sort::selectionSort, "Selection Sort");
         testSort(args, Sort::insertionSort, "Insertion Sort");
         testSort(args, Sort::shellSort, "Shell Sort");
+        testSort(args, Sort::mergeSort, "Merge Sort");
     }
 
     public static void testSort(String[] args, Function<int[], int[]> sortFunc, String name) {

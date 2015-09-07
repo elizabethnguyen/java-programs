@@ -1,3 +1,5 @@
+import java.util.*;
+
 public final class Sort {
 
     private Sort() {
@@ -107,9 +109,7 @@ public final class Sort {
 
     private static boolean hasNegative(int[] data) {
         for (int i = 0; i < data.length; i++) {
-            if (data[i] < 0) {
-                return true;
-            }
+            if (data[i] < 0) { return true; }
         }
         return false;
     }
@@ -131,11 +131,13 @@ public final class Sort {
             hasNegative = true;
         }
 
-        for (i = 0; i < oldData.length; i++) {
-            if (oldData[i] < 0) { negCountArray[Math.abs(oldData[i])]++; } else { countArray[oldData[i]]++; }
-        }
-        for (i = 0; i < oldData.length; i++) {
-            if (newData[i] < 0) { negCountArray[Math.abs(newData[i])]--; } else { countArray[newData[i]]--; }
+        if (hasNegative) {
+            for (i = 0; i < oldData.length; i++) {
+                if (oldData[i] < 0) { negCountArray[Math.abs(oldData[i])]++; } else { countArray[oldData[i]]++; }
+            }
+            for (i = 0; i < oldData.length; i++) {
+                if (newData[i] < 0) { negCountArray[Math.abs(newData[i])]--; } else { countArray[newData[i]]--; }
+            }
         }
 
         for (i = 0; i < countArray.length; i++ ) {
@@ -235,4 +237,68 @@ public final class Sort {
         }
         return data;
     }
+
+    public static int[] mergeSort(int[] data) {
+        if (data == null) { return null; }
+        if (data.length == 1) { return data; }
+        if (data.length == 0) { return data; }
+
+        mergeSort(data, 0, data.length - 1);
+        return data;
+    }
+
+    private static void mergeSort(int[] data, int leftIdx, int rightIdx) {
+        if (leftIdx < rightIdx) {
+            int middleIdx = ((rightIdx - leftIdx) / 2) + leftIdx;
+            mergeSort(data, leftIdx, middleIdx);
+            mergeSort(data, middleIdx+1, rightIdx);
+            merge(data, leftIdx, middleIdx, rightIdx);
+        }
+    }
+
+    private static void merge(int[] data, int leftIdx, int middleIdx, int rightIdx) {
+        int[] leftArray = new int[(middleIdx - leftIdx) + 1];
+        int[] rightArray = new int [rightIdx - middleIdx];
+
+        int i = 0;
+        int j = 0;
+        int k = leftIdx;
+
+        for (i = leftIdx; i <= middleIdx; i++) { // copy elements for left array
+            leftArray[j] = data[i];
+            j++;
+        }
+
+        j = 0;
+        for (i = middleIdx+1; i <= rightIdx; i++) { // copy elements for right array
+            rightArray[j] = data[i];
+            j++;
+        }
+
+        i = 0;
+        j = 0;
+
+        // standard merge comparisons
+        while (i < leftArray.length && j < rightArray.length) {
+            if (leftArray[i] < rightArray[j]) {
+                data[k] = leftArray[i];
+                i++;
+            } else {
+                data[k] = rightArray[j];
+                j++;
+            }
+            k++;
+        }
+
+        // running out of elements in one array -- insert the rest of the array as is into data
+        for (; j < rightArray.length; j++) {
+            data[k] = rightArray[j];
+            k++;
+        }
+        for (; i < leftArray.length; i++) {
+            data[k] = leftArray[i];
+            k++;
+        }
+    }
+
 }
