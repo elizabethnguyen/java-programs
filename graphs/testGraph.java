@@ -11,6 +11,14 @@ public class testGraph
         g.addEdge(5, 5);
         g.addEdge(2, 4);
         System.out.println(g);
+        System.out.println("Depth First Search");
         DepthFirstSearch.DFS(g, 0);
+        System.out.println();
+        System.out.println("Breadth First Search");
+        BreadthFirstSearch.BFS(g, 0);
+        System.out.println();
+        System.out.println("Topological Sort");
+        DepthFirstSearch.topologicalSort(g, 0);
+
     }
 }
